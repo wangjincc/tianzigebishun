@@ -94,105 +94,51 @@ li svg{ magin:8px; vertical-align:middle;}
 
 
 preg_match_all("/./u",$words,$hz);
+//print_r(count($hz['0']));
+    // for($i=0; $i<4; $i++)
+
+    // {
+
+    //     echo "数组第".($i+1)."个元素是：";
+
+    //     echo $hz[$i];
+
+    //     echo "<br>";
+
+    // }
+
 
 for($ihz=0;$ihz<count($hz['0']);$ihz++){
 
-	//$hzGBK=iconv('UTF-8', 'GB2312' ,$hz['0'][$ihz]); 转换字符，暂时不用
+ 	 $hzGBK=iconv('UTF-8', 'GB2312' ,$hz['0'][$ihz]); 
 
 	if(file_exists("bishun_data/".$hz['0'][$ihz].".json")){
 		//$data=file_get_contents("bishun_data/".$hzGBK.".json");
-		$data=file_get_contents("bishun_data/".$hz['0'][$ihz].".json");
 		//$data=file_get_contents("bishun_data/瑾.json");
+		echo "yes";
 	}else{
 		//$data=file_get_contents("bishun_data/".$hz['0'][$ihz].".json");
 		//$data=file_get_contents("bishun_data/瑾.json");
-		continue; //不存在就跳过
+		//echo "no";
+		continue;
 	}
 
 
-	$data=json_decode($data,1);
-	$count=count($data['strokes']);//统计共有多少画
-	$count=0;//不显示笔画
-	//$data['strokes']
+// 	// $data=json_decode($data,1);
+// 	// $count=count($data['strokes']);//统计共有多少画
+// 	// $count=0;//不显示笔画
+// 	//$data['strokes']
 
 
-	/*显示完整字符*/
-	echo '<li class="svg"><svg width="54" height="54" style="margin-top: -11px;"><g transform="translate(-2.9,48) scale(0.058, -0.0572)">';
+// 	/*显示完整字符*/
 	
-	foreach ($data['strokes'] as $v){
-		echo '<path d="'.$v.'"style="fill:rgb('.$color.');stroke:rgb('.$color.');" stroke-width = "0"></path>';
-	}
-
-	echo "</g></svg></li>";
+// 	foreach ($hz as $v){
+// 		echo $v;
+// 	}
 
 
-	// //按笔数显示
-	// for($i=0;$i<$count;$i++){
-		
-	// 	echo '<li class="svg"><svg width="54" height="54" style="margin-top: -11px;"><g transform="translate(-2.9,48) scale(0.058, -0.0572)">';
-		
-	// 	for($ii=0;$ii<=$i;$ii++){
-	// 		echo '<path d="'.$data['strokes'][$ii].'"style="fill:rgb('.$fcolor.');stroke:rgb('.$fcolor.');" stroke-width = "0"></path>';
-	// 	}
-		
+ }
 
-	// 	echo '</g></svg></li>';
-
-	// }
-	
-	
-	/*判断是否填充12个田字格*/
-	$tzg12=($count+1)/12;
-	$kg=0;//空格，每行剩余未填充的空格
-	if(!is_int($tzg12)){
-		$kg=12- (12* $tzg12);
-	}
-	//为负数
-	if($kg<0){
-		$kg= ((ceil(abs($kg)/12)+1)*12)-($count+1);
-	}
-	
-	/*行数不够，填充*/
-	//填充完整字符
-	if($kg and $bs){
-		for($i=0;$i<$kg;$i++){
-			/*显示完整字符*/
-		 echo '<li class="svg"><svg width="54" height="54" style="margin-top: -11px;"><g transform="translate(-2.9,48) scale(0.058, -0.0572)">';
-	
-	     foreach ($data['strokes'] as $v){
-		    echo '<path d="'.$v.'"style="fill:rgb('.$fcolor.');stroke:rgb('.$fcolor.');" stroke-width = "0"></path>';
-	     }
-		 echo "</g></svg></li>";
-
-		}
-	}
-	//填充空行
-	if($kg and !$bs){
-		for($i=0;$i<$kg;$i++){
-			echo '<li class="svg">&nbsp;</li>';
-		}
-		
-	}
-
-	/*分页显示标题头部*/
-	
-	$tzg_hs[]= ceil($tzg12);//占用行数
-	$arraytzg=intval(array_sum($tzg_hs));
-	$arraytzg=$arraytzg/15;
-	if(is_int($arraytzg)){
-		echo "</ul></div><div class='afterpage'><ul>";
-	}
-
-}
-
-//堆满整页
-$tzg_hs=array_sum($tzg_hs);//田字格使用行数
-$tzgzys=ceil($tzg_hs/15);//田字格总页数
-$zhengye=($tzgzys*15-$tzg_hs)*12;
-
-	for($i=0;$i<$zhengye;$i++){
-		echo "<li>&nbsp;</li>";
-	}
 
 ?>
 </ul>
